@@ -1,4 +1,4 @@
-package com.coldchain.api.model;
+package com.coldchain.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

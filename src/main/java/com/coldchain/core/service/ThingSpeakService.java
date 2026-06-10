@@ -1,6 +1,6 @@
-package com.coldchain.api.service;
+package com.coldchain.core.service;
 
-import com.coldchain.api.dto.ThingSpeakResponse;
+import com.coldchain.core.dto.ThingSpeakResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

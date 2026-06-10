@@ -1,22 +1,24 @@
-package com.coldchain.api.service;
+package com.coldchain.core.service;
 
+import com.coldchain.emails.service.EmailService;
+import jakarta.mail.MessagingException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
 import java.util.Map;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ColdChainAlertService {
-
-    private final JavaMailSender mailSender;
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${spring.mail.username}")
-    private String systemSenderEmail;
+    private final EmailService emailService;
 
     @Value("${thingspeak.channel-id}")
     private String channelId;
@@ -28,11 +30,6 @@ public class ColdChainAlertService {
     private final double TEMP_THRESHOLD_CEILING = 28.0;
     private int lastProcessedEntryId = 0;
 
-    public ColdChainAlertService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
-
-    @SuppressWarnings("unchecked")
     @Scheduled(fixedRate = 30000)
     public void monitorColdChainTelemetry() {
         try {
@@ -71,13 +68,7 @@ public class ColdChainAlertService {
         }
     }
 
-    private void dispatchEmergencyEmail(double breachedTemp, int entryId) {
-        SimpleMailMessage message = new SimpleMailMessage();
-
-        message.setFrom(systemSenderEmail);
-        message.setTo(systemSenderEmail);
-        message.setSubject("🚨 CRITICAL BREACH: ColdChain Unit Warning");
-
+    private void dispatchEmergencyEmail(double breachedTemp, int entryId) throws MessagingException {
         String emailBody = String.format(
                 "Warning! The monitored Cold Chain container has breached safe operating thresholds.\n\n" +
                         "Log Entry ID: %d\n" +
@@ -86,9 +77,12 @@ public class ColdChainAlertService {
                         "Please check the container system diagnostics immediately.",
                 entryId, breachedTemp, TEMP_THRESHOLD_CEILING
         );
-
-        message.setText(emailBody);
-        mailSender.send(message);
+        String systemSenderEmail = "tonnymaishaogeto@gmail.com";
+        emailService.sendEmailSync(
+                emailBody,
+                "🚨 CRITICAL BREACH: ColdChain Unit Warning",
+                systemSenderEmail
+        );
         System.out.println("Success: Critical threshold alert email safely sent to " + systemSenderEmail);
     }
 }

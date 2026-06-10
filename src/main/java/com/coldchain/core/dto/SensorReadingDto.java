@@ -1,4 +1,4 @@
-package com.coldchain.api.dto;
+package com.coldchain.core.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

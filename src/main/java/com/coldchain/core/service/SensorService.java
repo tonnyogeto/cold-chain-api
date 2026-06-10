@@ -1,10 +1,10 @@
-package com.coldchain.api.service;
+package com.coldchain.core.service;
 
-import com.coldchain.api.dto.ThingSpeakResponse;
-import com.coldchain.api.model.Device;
-import com.coldchain.api.model.SensorReading;
-import com.coldchain.api.repository.DeviceRepository;
-import com.coldchain.api.repository.SensorReadingRepository;
+import com.coldchain.core.dto.ThingSpeakResponse;
+import com.coldchain.core.model.Device;
+import com.coldchain.core.model.SensorReading;
+import com.coldchain.core.repository.DeviceRepository;
+import com.coldchain.core.repository.SensorReadingRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

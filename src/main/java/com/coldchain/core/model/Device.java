@@ -1,4 +1,4 @@
-package com.coldchain.api.model;
+package com.coldchain.core.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

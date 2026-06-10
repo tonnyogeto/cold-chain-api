@@ -1,8 +1,8 @@
-package com.coldchain.api.controller;
+package com.coldchain.core.controller;
 
-import com.coldchain.api.dto.SensorReadingDto;
-import com.coldchain.api.model.SensorReading;
-import com.coldchain.api.repository.SensorReadingRepository;
+import com.coldchain.core.dto.SensorReadingDto;
+import com.coldchain.core.model.SensorReading;
+import com.coldchain.core.repository.SensorReadingRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
