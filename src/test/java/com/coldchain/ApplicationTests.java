@@ -1,4 +1,4 @@
-package com.coldchain.api;
+package com.coldchain;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,6 +1,6 @@
-package com.coldchain.api.service;
+package com.coldchain.core.service;
 
-import com.coldchain.api.dto.ThingSpeakResponse;
+import com.coldchain.core.dto.ThingSpeakResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;

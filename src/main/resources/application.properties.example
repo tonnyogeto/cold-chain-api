@@ -1,5 +1,0 @@
-spring.datasource.url=jdbc:postgresql://localhost:5432/YOUR_DB_NAME
-spring.datasource.username=YOUR_USERNAME
-spring.datasource.password=YOUR_PASSWORD
-thingspeak.channel-id=YOUR_CHANNEL_ID
-thingspeak.read-api-key=YOUR_API_KEY
