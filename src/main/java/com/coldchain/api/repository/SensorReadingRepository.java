@@ -20,10 +20,13 @@ public interface SensorReadingRepository extends JpaRepository<SensorReading, Lo
     List<SensorReading> findAllWithDevices();
 
     /**
-     * Custom Native Query for Fleet Status.
-     * Keeps the 'Distinct On' logic for PostgreSQL to get the latest row per device.
+     * OPTIMIZED JPQL QUERY:
+     * Pulls the absolute freshest entries by tracking the maximum auto-incrementing serial ID
+     * grouped by each individual device. Using JOIN FETCH eliminates N+1 query overhead,
+     * cleanly hydrates the child object graph, and resolves identical timestamp sorting bugs.
      */
-    @Query(value = "SELECT DISTINCT ON (device_id) * FROM sensor_readings ORDER BY device_id, recorded_at DESC", nativeQuery = true)
+    @Query("SELECT s FROM SensorReading s JOIN FETCH s.device WHERE s.id IN " +
+            "(SELECT MAX(r.id) FROM SensorReading r GROUP BY r.device.id)")
     List<SensorReading> findLatestReadingsForAllDevices();
 
     SensorReading findTopByOrderByRecordedAtDesc();

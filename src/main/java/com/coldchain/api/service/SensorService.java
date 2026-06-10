@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 @Slf4j
 @Service
@@ -40,8 +41,11 @@ public class SensorService {
         Device device = deviceRepository.findById(deviceId)
                 .orElseThrow(() -> new RuntimeException("Device with ID " + deviceId + " not found in database"));
 
-        // 2. Parse Timestamp and check for duplicates
-        LocalDateTime recordedAt = OffsetDateTime.parse(feed.getCreated_at()).toLocalDateTime();
+        // 2. Parse Timestamp, shift context to local timezone, and check for duplicates
+        // ✅ FIXED: Converts raw UTC incoming feeds safely into local system timezone timelines
+        LocalDateTime recordedAt = OffsetDateTime.parse(feed.getCreated_at())
+                .atZoneSameInstant(ZoneId.systemDefault())
+                .toLocalDateTime();
 
         if (sensorReadingRepository.existsByRecordedAtAndDevice(recordedAt, device)) {
             log.info("Duplicate record detected for device {} at {}. Skipping.", deviceId, recordedAt);
@@ -63,7 +67,7 @@ public class SensorService {
         // Handle Alert Status (Field 7)
         reading.setAlertStatus(parseSafeShort(feed.getField7(), (short) 0));
 
-        // ✅ NEW: Map Fan Status (Field 8) to the Entity
+        // Map Fan Status (Field 8) to the Entity
         reading.setFanStatus(parseSafeShort(feed.getField8(), (short) 0));
 
         // 4. Persist

@@ -18,10 +18,11 @@ public class ThingSpeakPoller {
     }
 
     /**
-     * Polls ThingSpeak every 15 seconds.
-     * Synchronized with the 15s upload frequency of the ESP32.
+     * Polls ThingSpeak dynamically with a 15-second delay between cycles.
+     * FIXED: Swapped 'fixedRate' to 'fixedDelay' to prevent overlapping execution threads
+     * if HTTP request handshakes delay due to network latency.
      */
-    @Scheduled(fixedRate = 15000)
+    @Scheduled(fixedDelay = 15000)
     public void pollThingSpeak() {
         try {
             log.debug("Initiating ThingSpeak sync cycle...");

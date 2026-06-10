@@ -23,7 +23,9 @@ public class SensorReading {
     @Column(name="id")
     private Long id;
 
-    @ManyToOne
+    // ✅ UPDATED: Added FetchType.EAGER to ensure the Device relationship
+    // is fully populated during native SQL execution for the fleet overview.
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="device_id")
     @JsonIgnore
     private Device device;
@@ -54,5 +56,4 @@ public class SensorReading {
 
     @Column(name="distance")
     private BigDecimal distance;
-
 }
