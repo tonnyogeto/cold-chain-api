@@ -32,7 +32,9 @@ public class ColdChainAlertService {
 
     @Scheduled(fixedRate = 30000)
     public void monitorColdChainTelemetry() {
+
         try {
+
             String thingSpeakUrl = String.format(
                     "https://api.thingspeak.com/channels/%s/feeds.json?api_key=%s&results=1",
                     channelId, readApiKey
